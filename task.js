@@ -3,6 +3,8 @@ module.exports = function(grunt) {
   var _ = require('lodash');
   var broccoli = require('broccoli');
   var findup = require('findup-sync');
+  var RSVP = require('rsvp');
+  var ncp = require('ncp');
 
   // broccoli:build
   registerBroccoliCommandTask('build', 'Build Broccoli configuration');
@@ -25,12 +27,15 @@ module.exports = function(grunt) {
       var _this = this, tree;
 
       var options = this.options(_.merge({
-        config: './Brocfile.js'
+        config: findup('Brocfile.js', {nocase: true})
       }, defaults));
 
       // set options config from flags
       if (!options.command) {
         options.command = (this.flags.build?'build':void 0) || (this.flags.serve?'serve':void 0);
+        if (!options.command) {
+          grunt.log.error('You have to specify :build or :serve command after the task');
+        }
       }
 
       function mergeTree(tree){
@@ -65,7 +70,27 @@ module.exports = function(grunt) {
       }
 
       tree = buildTree(options.config);
+      var builder = new broccoli.Builder(tree);
 
+      var done = this.async();
+
+      if (options.command === 'build') {
+
+        builder.build()
+          .then(function(dir){
+            return RSVP.denodeify(ncp)(dir, _this.data.dest, {
+              clobber: true,
+              stopOnErr: true
+            });
+          })
+          .then(done, function (err) {
+            grunt.log.error(err.message);
+          });
+      }
+
+      if (options.command === 'serve') {
+        broccoli.server.serve(builder);
+      }
 
     };
   }
