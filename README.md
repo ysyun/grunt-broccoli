@@ -28,10 +28,8 @@ Serve your Broccoli output
 broccoli: {
 
       withFunction: {
-        options: {
-          // method bound to task
-          config: brocFunction
-        },
+        // method bound to task
+        config: brocFunction
         src: 'examples',
         dest: 'output'
       },

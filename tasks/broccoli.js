@@ -27,7 +27,7 @@ module.exports = function(grunt) {
       var _this = this, tree;
 
       var options = this.options(_.merge({
-        config: findup('Brocfile.js', {nocase: true})
+        config:  (this.data && this.data.config ? this.data.config : void 0) || findup('Brocfile.js', {nocase: true})
       }, defaults));
 
       // set options config from flags
@@ -84,7 +84,7 @@ module.exports = function(grunt) {
 
         builder.build()
           .then(function(dir){
-            return RSVP.denodeify(ncp)(dir, (_this.data?_this.data.dest:void 0) || _this.args[0], {
+            return RSVP.denodeify(ncp)(dir, (_this.data?_this.data.dest:void 0) || _this.args[0] || 'build', {
               clobber: true,
               stopOnErr: true
             });

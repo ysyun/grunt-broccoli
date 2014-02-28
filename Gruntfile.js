@@ -5,10 +5,8 @@ module.exports = function(grunt) {
     broccoli: {
 
       withFunction: {
-        options: {
-          // method bound to task
-          config: brocFunction
-        },
+        // method bound to task
+        config: brocFunction,
         src: 'examples',
         dest: 'output'
       },
@@ -40,6 +38,6 @@ module.exports = function(grunt) {
     return tree;
   }
 
-  require('./tasks/task')(grunt);
+  require('./tasks/broccoli')(grunt);
 
 };
