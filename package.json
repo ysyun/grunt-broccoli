@@ -1,0 +1,21 @@
+{
+  "name": "grunt-broccoli",
+  "version": "0.1.0",
+  "description": "Broccoli build and serve tasks for Grunt task runner",
+  "main": "task.js",
+  "tags": [
+    "gruntplugin",
+    "broccoli"
+  ],
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Taras Mankovski <taras@quandl.com>",
+  "license": "MIT",
+  "dependencies": {
+    "broccoli": "~0.2.0",
+    "grunt": "~0.4.2",
+    "lodash": "~2.4.1",
+    "findup-sync": "~0.1.2"
+  }
+}
