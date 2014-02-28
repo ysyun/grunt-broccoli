@@ -1,20 +1,28 @@
 # grunt-broccoli
 
-Allows you to execute your Broccoli configurations as Grunt tasks.
+Allows you to execute your Broccoli configurations as Grunt tasks. [Broccoli](https://github.com/joliss/broccoli) is an asset pipeline that allows for incremental builds. Broccoli rebuilds individual files instead of the entire project as Grunt watch does. Checkout the [Broccoli Sample App](https://github.com/joliss/broccoli-sample-app).
 
 ## Build in tasks
 
-Build in tasks ```broccoli:serve``` && ```broccoli:build:{outputDir}``` look for Broccoli.js in working directory and executes it.
+Built in tasks ```broccoli:serve``` && ```broccoli:build:{outputDir}``` look for Broccoli.js in working directory and execute it.
 
 ### broccoli:build:{outputDir}
 
-If you don't specify the output directory, then it will write to default **build** directory.
+If you don't specify {outputDir} directory, then it will write to default **build** directory.
 
 ### broccoli:serve
 
-Start broccoli server.
+Start Broccoli server.
 
 ## Custom Tasks
+
+### broccoli:{customTaskName}:build
+
+Build Broccoli output
+
+### broccoli:{customTaskName}:serve
+
+Serve your Broccoli output
 
 ```javascript
 broccoli: {
