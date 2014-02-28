@@ -70,6 +70,12 @@ module.exports = function(grunt) {
       }
 
       tree = buildTree(options.config);
+
+      if (!tree) {
+        grunt.log.writeln('Nothing done.');
+        return;
+      }
+
       var builder = new broccoli.Builder(tree);
 
       var done = this.async();
@@ -78,7 +84,7 @@ module.exports = function(grunt) {
 
         builder.build()
           .then(function(dir){
-            return RSVP.denodeify(ncp)(dir, _this.data.dest, {
+            return RSVP.denodeify(ncp)(dir, (_this.data?_this.data.dest:void 0) || _this.args[0], {
               clobber: true,
               stopOnErr: true
             });
