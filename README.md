@@ -4,11 +4,11 @@ Allows you to execute your Broccoli configurations as Grunt tasks. [Broccoli](ht
 
 ## Build in tasks
 
-Built in tasks ```broccoli:serve``` && ```broccoli:build:{outputDir}``` look for Broccoli.js in working directory and executes it.
+Built in tasks ```broccoli:serve``` && ```broccoli:build:{outputDir}``` look for Broccoli.js in working directory and execute it.
 
 ### broccoli:build:{outputDir}
 
-If you don't specify the output directory, then it will write to default **build** directory.
+If you don't specify {outputDir} directory, then it will write to default **build** directory.
 
 ### broccoli:serve
 
