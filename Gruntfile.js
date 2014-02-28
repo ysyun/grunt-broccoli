@@ -40,6 +40,6 @@ module.exports = function(grunt) {
     return tree;
   }
 
-  require('./task')(grunt);
+  require('./tasks/task')(grunt);
 
 };
