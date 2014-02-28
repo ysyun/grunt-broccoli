@@ -12,9 +12,17 @@ If you don't specify {outputDir} directory, then it will write to default **buil
 
 ### broccoli:serve
 
-Start broccoli server.
+Start Broccoli server.
 
 ## Custom Tasks
+
+### broccoli:{customTaskName}:build
+
+Build Broccoli output
+
+### broccoli:{customTaskName}:serve
+
+Serve your Broccoli output
 
 ```javascript
 broccoli: {
