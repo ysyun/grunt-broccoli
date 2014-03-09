@@ -5,6 +5,7 @@ module.exports = function(grunt) {
   var findup = require('findup-sync');
   var RSVP = require('rsvp');
   var ncp = require('ncp');
+  var path = require('path');
 
   // broccoli:build
   registerBroccoliCommandTask('build', 'Build Broccoli configuration');
@@ -38,16 +39,12 @@ module.exports = function(grunt) {
         }
       }
 
-      function mergeTree(tree){
-        if (_.isArray(tree)) {
-          tree = broccoli.mergeTree(tree);
-        }
-        return tree;
-      }
-
       function buildTree(config) {
         var tree;
         if (_.isString(config)) {
+          if (!grunt.file.isPathAbsolute(config)) {
+            config = path.normalize(path.join(process.cwd(), config));
+          }
           try {
             tree = require(config)(broccoli);
           } catch (e) {
@@ -56,10 +53,8 @@ module.exports = function(grunt) {
           if (_.isUndefined(tree)) {
             grunt.verbose.error(config + " did not return a tree.");
           }
-          tree = mergeTree(tree);
         } else if (_.isFunction(config)) {
           tree = config.apply(_this, [broccoli]);
-          tree = mergeTree(tree);
         } else if (_.isArray(config)) {
           tree = _.filter(config.map(buildTree));
         } else {
@@ -74,6 +69,10 @@ module.exports = function(grunt) {
       if (!tree) {
         grunt.log.writeln('Nothing done.');
         return;
+      }
+
+      if (_.isArray(tree)) {
+        tree = new broccoli.MergedTree(tree)
       }
 
       var builder = new broccoli.Builder(tree);
