@@ -29,7 +29,9 @@ module.exports = function(grunt) {
       var _this = this, tree;
 
       var options = this.options(_.merge({
-        config:  (this.data && this.data.config ? this.data.config : void 0) || findup('Brocfile.js', {nocase: true})
+        config:  (this.data && this.data.config ? this.data.config : void 0) || findup('Brocfile.js', {nocase: true}),
+        port: 4200,
+        host: '127.0.0.1'
       }, defaults));
 
       // set options config from flags
@@ -95,7 +97,10 @@ module.exports = function(grunt) {
       }
 
       if (options.command === 'serve') {
-        broccoli.server.serve(builder);
+        broccoli.server.serve(builder, {
+          port: options.port,
+          host: options.host
+        });
       }
 
     };

@@ -5,6 +5,10 @@ module.exports = function(grunt) {
     broccoli: {
 
       withFunction: {
+        options: {
+          port: 5444,
+          host: 'localhost'
+        },
         // method bound to task
         config: brocFunction,
         src: 'examples',
