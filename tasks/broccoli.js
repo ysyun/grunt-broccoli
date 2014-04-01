@@ -2,6 +2,7 @@ module.exports = function(grunt) {
 
   var _ = require('lodash');
   var broccoli = require('broccoli');
+  var mergeTrees = require('broccoli-merge-trees');
   var findup = require('findup-sync');
   var RSVP = require('rsvp');
   var ncp = require('ncp');
@@ -72,7 +73,7 @@ module.exports = function(grunt) {
       }
 
       if (_.isArray(tree)) {
-        tree = new broccoli.MergedTree(tree)
+        tree = mergeTrees(tree, { overwrite: true })
       }
 
       var builder = new broccoli.Builder(tree);

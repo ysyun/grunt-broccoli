@@ -1,6 +1,6 @@
 module.exports = function(broccoli) {
 
-  var tree = broccoli.makeTree('examples');
+  var tree = 'examples';
 
   return tree;
 };

@@ -33,7 +33,7 @@ module.exports = function(grunt) {
 
   function brocFunction(broccoli) {
 
-    var tree = broccoli.makeTree(this.data.src);
+    var tree = this.data.src;
 
     return tree;
   }
