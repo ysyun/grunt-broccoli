@@ -1,47 +1,29 @@
 module.exports = function(grunt) {
+  grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-nodeunit');
+  grunt.loadTasks('tasks');
+  grunt.registerTask('test', ['clean', 'broccoli:*:build', 'nodeunit']);
 
   grunt.initConfig({
+    clean: {
+      tests: ['tmp']
+    },
+
+    nodeunit: {
+      tests: ['test/*_test.js']
+    },
 
     broccoli: {
 
-      withFunction: {
+      withConfig: {
+        dest: 'tmp/tests/with_config',
         options: {
-          port: 5444,
-          host: 'localhost'
-        },
-        // method bound to task
-        config: brocFunction,
-        src: 'examples',
-        dest: 'output'
-      },
-
-      withRequire: {
-        options: {
-          config: require('./examples/Brocfile2')
-        },
-        src: 'examples',
-        dest: 'output'
-      },
-
-      withArray: {
-        options: {
-          config: [ './examples/Brocfile.js', brocFunction, require('./examples/Brocfile2') ]
-        },
-        src: 'examples',
-        dest: 'output'
+          config: './test/fixtures/Brocfile.js'
+        }
       }
 
     }
 
   });
-
-  function brocFunction(broccoli) {
-
-    var tree = this.data.src;
-
-    return tree;
-  }
-
-  require('./tasks/broccoli')(grunt);
 
 };

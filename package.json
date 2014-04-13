@@ -8,17 +8,19 @@
     "broccoli"
   ],
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "grunt test"
   },
   "author": "Taras Mankovski <taras@quandl.com>",
   "license": "MIT",
   "dependencies": {
     "broccoli": "~0.6.0",
+    "broccoli-merge-trees": "~0.1.0",
     "grunt": "~0.4.2",
     "lodash": "~2.4.1",
-    "findup-sync": "~0.1.2",
-    "rsvp": "~3.0.6",
-    "ncp": "~0.5.0",
-    "broccoli-merge-trees": "~0.1.0"
+    "fs-extra": "~0.8.1"
+  },
+  "devDependencies": {
+    "grunt-contrib-nodeunit": "~0.3.3",
+    "grunt-contrib-clean": "~0.5.0"
   }
 }
