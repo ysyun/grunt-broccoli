@@ -1,18 +1,10 @@
-module.exports = function(grunt) {
 
+module.exports = function(grunt) {
   var _ = require('lodash');
   var broccoli = require('broccoli');
   var mergeTrees = require('broccoli-merge-trees');
-  var findup = require('findup-sync');
-  var RSVP = require('rsvp');
-  var ncp = require('ncp');
   var path = require('path');
-
-  // broccoli:build
-  registerBroccoliCommandTask('build', 'Build Broccoli configuration');
-
-  // broccoli:serve
-  registerBroccoliCommandTask('serve', 'Serve Broccoli configuration');
+  var fs = require('fs-extra');
 
   // broccoli:{customTaskName}[:(build,serve)]
   grunt.registerMultiTask('broccoli', 'Execute Custom Broccoli task', broccoliTask());
@@ -28,11 +20,11 @@ module.exports = function(grunt) {
 
       var _this = this, tree;
 
-      var options = this.options(_.merge({
-        config:  (this.data && this.data.config ? this.data.config : void 0) || findup('Brocfile.js', {nocase: true}),
-        port: 4200,
-        host: '127.0.0.1'
-      }, defaults));
+      var options = this.options({
+        config: 'Brocfile.js',
+        host: 'localhost',
+        port: 4200
+      });
 
       // set options config from flags
       if (!options.command) {
@@ -82,17 +74,17 @@ module.exports = function(grunt) {
 
       var done = this.async();
 
-      if (options.command === 'build') {
+      var dest = (_this.data?_this.data.dest:void 0) || _this.args[0] || 'build';
 
+      if (options.command === 'build') {
         builder.build()
-          .then(function(dir){
-            return RSVP.denodeify(ncp)(dir, (_this.data?_this.data.dest:void 0) || _this.args[0] || 'build', {
-              clobber: true,
-              stopOnErr: true
-            });
+          .then(function(dir) {
+            fs.removeSync(dest);
+            fs.mkdirpSync(dest);
+            fs.copySync(dir, dest);
           })
           .then(done, function (err) {
-            grunt.log.error(err.message);
+            grunt.log.error(err);
           });
       }
 
