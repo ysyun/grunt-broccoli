@@ -1,63 +1,60 @@
-# grunt-broccoli
+# grunt-broccoli [![Build Status](https://travis-ci.org/quandl/grunt-broccoli.svg?branch=master)](https://travis-ci.org/quandl/grunt-broccoli)
 
 Allows you to execute your Broccoli configurations as Grunt tasks. [Broccoli](https://github.com/joliss/broccoli) is an asset pipeline that allows for incremental builds. Broccoli rebuilds individual files instead of the entire project as Grunt watch does. Checkout the [Broccoli Sample App](https://github.com/joliss/broccoli-sample-app).
 
-## Build in tasks
 
-Built in tasks ```broccoli:serve``` && ```broccoli:build:{outputDir}``` look for Broccoli.js in working directory and execute it.
+## Running your tasks
 
-### broccoli:build:{outputDir}
+grunt-broccoli is a multi-task so you must specify a target when running the task.
 
-If you don't specify {outputDir} directory, then it will write to default **build** directory.
+#### Building to a directory
 
-### broccoli:serve
+```bash
+grunt broccoli:{targetName}:build
+```
 
-Start Broccoli server.
+#### Running the Broccoli server
 
-## Custom Tasks
+```bash
+grunt broccoli:{targetName}:serve
+```
 
-### broccoli:{customTaskName}:build
+## Configuring your tasks
 
-Build Broccoli output
+You can configure these settings (see examples below):
 
-### broccoli:{customTaskName}:serve
+`config`: [String or Function]
+If a string, it refers to the location of the Brocfile relative to the current working directory.
+If a function, it expects that the return value is a Broccoli-compatible tree.
+Defaults to 'Brocfile.js'.
 
-Serve your Broccoli output
+`dest`: [String]
+Specifies the output folder. This only affects the `build` command.
+The `build` command will abort if a `dest` directory is not set.
+
+`host`/`port`: [String]/[Number]
+Specifies the host and port that the Broccoli server runs on. This only affects the `serve` command.
+Defaults to `localhost` and `4200`.
+
+## Examples
 
 ```javascript
 broccoli: {
-
-      withFunction: {
-        // method bound to task
-        config: brocFunction
-        src: 'examples',
-        dest: 'output'
-      },
-
-      withRequire: {
-        options: {
-          config: require('./examples/Brocfile2')
-        },
-        src: 'examples',
-        dest: 'output'
-      },
-
-      withArray: {
-        options: {
-          config: [ './examples/Brocfile.js', brocFunction, require('./examples/Brocfile2') ]
-        },
-        src: 'examples',
-        dest: 'output'
-      }
-
+  dist: {
+    dest: 'dist',
+    config: function() {
+      var transpiled = transpileTree('lib');
+      var allFiles = mergeTrees([transpiled, 'vendor']);
+      var concated = concatFiles(allFiles);
+      var uglified = uglifyFiles(concated);
+      return uglified;
     }
+  },
 
-  });
-
-  function brocFunction(broccoli) {
-
-    var tree = this.data.src;
-
-    return tree;
+  dev: {
+    dest: 'tmp/tests',
+    config: 'brocfiles/development.js',
+    port: 4201
   }
+}
 ```
