@@ -14,14 +14,15 @@ module.exports = function(grunt) {
     },
 
     broccoli: {
+      'with-brocfile': {
+        config: 'test/fixtures/with-brocfile.js',
+        dest: 'tmp/tests/with-brocfile'
+      },
 
-      withConfig: {
-        dest: 'tmp/tests/with_config',
-        options: {
-          config: './test/fixtures/Brocfile.js'
-        }
+      'with-function': {
+        config: require('./test/fixtures/with-function.js'),
+        dest: 'tmp/tests/with-function'
       }
-
     }
 
   });

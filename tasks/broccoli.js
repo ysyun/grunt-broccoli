@@ -1,101 +1,58 @@
-
 module.exports = function(grunt) {
-  var _ = require('lodash');
   var broccoli = require('broccoli');
-  var mergeTrees = require('broccoli-merge-trees');
   var path = require('path');
-  var fs = require('fs-extra');
+  var rimraf = require('rimraf');
+  var helpers = require('broccoli-kitchen-sink-helpers');
+  var copyRecursivelySync = helpers.copyRecursivelySync;
 
-  // broccoli:{customTaskName}[:(build,serve)]
-  grunt.registerMultiTask('broccoli', 'Execute Custom Broccoli task', broccoliTask());
+  grunt.registerMultiTask('broccoli', 'Execute Custom Broccoli task', broccoliTask);
 
-  function registerBroccoliCommandTask(command, description) {
-    grunt.registerTask('broccoli:' + command , description, broccoliTask({
-      command: command
-    }));
-  }
+  function broccoliTask() {
+    var config = this.data.config;
+    var tree;
 
-  function broccoliTask(defaults) {
-    return function() {
-
-      var _this = this, tree;
-
-      var options = this.options({
-        config: 'Brocfile.js',
-        host: 'localhost',
-        port: 4200
-      });
-
-      // set options config from flags
-      if (!options.command) {
-        options.command = (this.flags.build?'build':void 0) || (this.flags.serve?'serve':void 0);
-        if (!options.command) {
-          grunt.log.error('You have to specify :build or :serve command after the task');
-        }
+    if (typeof config === 'function') {
+      tree = config();
+    } else if (typeof config === 'string') {
+      var configFile = config || 'Brocfile.js';
+      var configPath = path.join(process.cwd(), configFile);
+      try {
+        tree = require(configPath);
+      } catch(e) {
+        grunt.fatal("Unable to load Broccoli config file: " + e.message);
       }
+    }
 
-      function buildTree(config) {
-        var tree;
-        if (_.isString(config)) {
-          if (!grunt.file.isPathAbsolute(config)) {
-            config = path.normalize(path.join(process.cwd(), config));
-          }
-          try {
-            tree = require(config)(broccoli);
-          } catch (e) {
-            grunt.fail.warn("Error occurred while trying to import broccoli config");
-          }
-          if (_.isUndefined(tree)) {
-            grunt.verbose.error(config + " did not return a tree.");
-          }
-        } else if (_.isFunction(config)) {
-          tree = config.apply(_this, [broccoli]);
-        } else if (_.isArray(config)) {
-          tree = _.filter(config.map(buildTree));
-        } else {
-          grunt.verbose.error("config has to be a string path, function or array of strings and/or functions");
-        }
+    var command = this.args[0];
 
-        return tree;
+    if (command === 'build') {
+      var dest = this.data.dest;
+
+      if (!dest) {
+        grunt.fatal('You must specify a destination folder, eg. `dest: "dist"`.');
       }
-
-      tree = buildTree(options.config);
-
-      if (!tree) {
-        grunt.log.writeln('Nothing done.');
-        return;
-      }
-
-      if (_.isArray(tree)) {
-        tree = mergeTrees(tree, { overwrite: true })
-      }
-
+      var done = this.async();
       var builder = new broccoli.Builder(tree);
+      builder.build()
+        .then(function(dir) {
+          // TODO: Don't delete files outside of cwd unless a flag is set.
+          rimraf.sync(dest);
+          copyRecursivelySync(dir, dest);
+        })
+        .then(done, function (err) {
+          grunt.log.error(err);
+        });
+    } else if (command === 'serve') {
+      var host = this.data.host || 'localhost';
+      var port = this.data.port || 4200;
 
       var done = this.async();
+      var builder = new broccoli.Builder(tree);
+      broccoli.server.serve(builder, { host: host, port: port });
+    } else {
+      grunt.fatal('You must specify either the :build or :serve command after the target.');
+    }
 
-      var dest = (_this.data?_this.data.dest:void 0) || _this.args[0] || 'build';
-
-      if (options.command === 'build') {
-        builder.build()
-          .then(function(dir) {
-            fs.removeSync(dest);
-            fs.mkdirpSync(dest);
-            fs.copySync(dir, dest);
-          })
-          .then(done, function (err) {
-            grunt.log.error(err);
-          });
-      }
-
-      if (options.command === 'serve') {
-        broccoli.server.serve(builder, {
-          port: options.port,
-          host: options.host
-        });
-      }
-
-    };
   }
 
 };
