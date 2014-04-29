@@ -13,7 +13,7 @@ module.exports = function(grunt) {
 
     if (typeof config === 'function') {
       tree = config();
-    } else if (typeof config === 'string') {
+    } else if (typeof config === 'string' || typeof config === 'undefined') {
       var configFile = config || 'Brocfile.js';
       var configPath = path.join(process.cwd(), configFile);
       try {

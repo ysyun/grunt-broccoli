@@ -22,9 +22,12 @@ module.exports = function(grunt) {
       'with-function': {
         config: require('./test/fixtures/with-function.js'),
         dest: 'tmp/tests/with-function'
+      },
+
+      'with-default': {
+        dest: 'tmp/tests/with-default'
       }
     }
 
   });
-
 };
