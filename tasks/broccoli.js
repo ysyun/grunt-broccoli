@@ -9,6 +9,7 @@ module.exports = function(grunt) {
 
   function broccoliTask() {
     var config = this.data.config;
+    process.env['BROCCOLI_ENV'] = this.data.env || 'development';
     var tree;
 
     if (typeof config === 'function') {
