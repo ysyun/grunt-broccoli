@@ -1,6 +1,6 @@
 {
   "name": "grunt-broccoli",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Broccoli build and serve tasks for Grunt task runner",
   "main": "Gruntfile.js",
   "tags": [
@@ -18,8 +18,8 @@
   },
   "dependencies": {
     "grunt": "~0.4.2",
-    "broccoli": "~0.9.0",
-    "broccoli-kitchen-sink-helpers": "0.2.0",
+    "broccoli": "~0.12.0",
+    "broccoli-kitchen-sink-helpers": "0.2.2",
     "rimraf": "~2.2.6"
   },
   "devDependencies": {

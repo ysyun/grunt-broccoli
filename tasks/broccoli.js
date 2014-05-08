@@ -35,10 +35,13 @@ module.exports = function(grunt) {
       var done = this.async();
       var builder = new broccoli.Builder(tree);
       builder.build()
-        .then(function(dir) {
+        /**
+         * As of Broccoli 0.10.0, build() returns { directory, graph }
+         */
+        .then(function(output) {
           // TODO: Don't delete files outside of cwd unless a flag is set.
           rimraf.sync(dest);
-          copyRecursivelySync(dir, dest);
+          copyRecursivelySync(output.directory, dest);
         })
         .then(done, function (err) {
           grunt.log.error(err);
