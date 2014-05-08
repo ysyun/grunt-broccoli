@@ -36,6 +36,9 @@ The `build` command will abort if a `dest` directory is not set.
 Specifies the host and port that the Broccoli server runs on. This only affects the `serve` command.
 Defaults to `localhost` and `4200`.
 
+`env`: [String]
+Set the `BROCCOLI_ENV` to use (see [broccoli-env](https://github.com/joliss/broccoli-env)).
+
 ## Examples
 
 ```javascript
