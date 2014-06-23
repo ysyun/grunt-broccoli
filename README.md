@@ -13,6 +13,12 @@ grunt-broccoli is a multi-task so you must specify a target when running the tas
 grunt broccoli:{targetName}:build
 ```
 
+#### Watching for changes and re-building to a directory
+
+```bash
+grunt broccoli:{targetName}:watch
+```
+
 #### Running the Broccoli server
 
 ```bash
@@ -29,8 +35,8 @@ If a function, it expects that the return value is a Broccoli-compatible tree.
 Defaults to 'Brocfile.js'.
 
 `dest`: [String]
-Specifies the output folder. This only affects the `build` command.
-The `build` command will abort if a `dest` directory is not set.
+Specifies the output folder. This doesn't affect the `serve` command.
+The `build` and `watch` commands will abort if a `dest` directory is not set.
 
 `host`/`port`: [String]/[Number]
 Specifies the host and port that the Broccoli server runs on. This only affects the `serve` command.
