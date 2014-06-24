@@ -45,8 +45,9 @@ module.exports = function(grunt) {
     } else if(command === 'serve') {
       var host = this.data.host || 'localhost';
       var port = this.data.port || 4200;
+      var liveReloadPort = this.data.liveReloadPort || 35729;
 
-      plugin.serve(config, { host: host, port: port });
+      plugin.serve(config, { host: host, port: port, liveReloadPort: liveReloadPort });
       this.async();
     } else {
       grunt.fatal('You must specify either the :build, :watch or :serve command after the target.');
