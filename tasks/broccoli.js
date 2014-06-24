@@ -16,7 +16,7 @@ module.exports = function(grunt) {
         grunt.fatal('You must specify a destination folder, eg. `dest: "dist"`.');
       }
       var done = this.async();
-      plugin.build(config).then(done, function(err) {
+      plugin.build(dest, config).then(done, function(err) {
         grunt.log.error(err);
       });
     } else if(command === 'watch') {
