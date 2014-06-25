@@ -2,7 +2,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-nodeunit');
   grunt.loadTasks('tasks');
-  grunt.registerTask('test', ['clean', 'broccoli:*:build', 'nodeunit']);
+  grunt.registerTask('test', ['clean', 'nodeunit']);
 
   grunt.initConfig({
     clean: {
