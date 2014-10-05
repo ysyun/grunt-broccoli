@@ -45,7 +45,7 @@ module.exports = function(grunt) {
         });
       } else {
         plugin.watch(dest, config).on('error', function(error) {
-          grunt.fatal('\n\nBuild failed.\n' + error.stack);
+          grunt.log.error(error.stack)
         });
       }
       this.async();
