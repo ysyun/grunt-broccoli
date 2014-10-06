@@ -1,6 +1,6 @@
 {
   "name": "grunt-broccoli",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "description": "Broccoli build and serve tasks for Grunt task runner",
   "main": "Gruntfile.js",
   "tags": [
