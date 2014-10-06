@@ -7,6 +7,7 @@ module.exports = function(grunt) {
   function broccoliTask() {
     process.env.BROCCOLI_ENV = this.data.env || 'development';
 
+    var liveReloadPort = this.data.liveReloadPort || 35729;
     var command = this.args[0],
       dest = this.data.dest,
       config = this.data.config;
@@ -44,15 +45,22 @@ module.exports = function(grunt) {
           backgroundProcess.kill();
         });
       } else {
-        plugin.watch(dest, config).on('error', function(error) {
-          grunt.log.error(error.stack)
+        var watcher = plugin.watch(dest, config).on('error', function(error) {
+          grunt.log.error(error.stack);
         });
+        if (this.data.liveReload) {
+          var liveReload = require('tiny-lr');
+          var liveReloadServer = liveReload();
+          liveReloadServer.listen(liveReloadPort);
+          watcher.on("livereload", function(){
+            liveReloadServer.changed({body: {files: ['LiveReload files']}});
+          });
+        }
       }
       this.async();
     } else if(command === 'serve') {
       var host = this.data.host || 'localhost';
       var port = this.data.port || 4200;
-      var liveReloadPort = this.data.liveReloadPort || 35729;
 
       plugin.serve(config, { host: host, port: port, liveReloadPort: liveReloadPort });
       this.async();

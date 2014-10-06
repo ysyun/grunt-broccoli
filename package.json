@@ -20,7 +20,8 @@
     "grunt": "~0.4.2",
     "broccoli": "~0.12.3",
     "broccoli-kitchen-sink-helpers": "0.2.4",
-    "rimraf": "~2.2.6"
+    "rimraf": "~2.2.6",
+    "tiny-lr": "^0.1.4"
   },
   "devDependencies": {
     "grunt-cli": "^0.1.13",
