@@ -5,7 +5,15 @@ module.exports = function(grunt) {
   grunt.registerMultiTask('broccoli', 'Execute Custom Broccoli task', broccoliTask);
 
   function broccoliTask() {
-    process.env.BROCCOLI_ENV = this.data.env || 'development';
+    if (typeof(this.data.env) === 'string') {
+      process.env.BROCCOLI_ENV = this.data.env;
+    } else if (this.data.env) {
+      Object.keys(this.data.env).forEach(function (key) {
+        process.env[key] = this.data.env[key];
+      }.bind(this));
+    } else {
+      process.env.BROCCOLI_ENV = 'development';
+    }
 
     var liveReloadPort = this.data.liveReloadPort || 35729;
     var command = this.args[0],
