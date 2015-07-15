@@ -14,7 +14,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/quandl/grunt-broccoli.git"
+    "url": "https://github.com/embersherpa/grunt-broccoli.git"
   },
   "dependencies": {
     "broccoli": "~0.15.3",
