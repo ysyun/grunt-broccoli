@@ -1,14 +1,18 @@
 {
   "name": "grunt-broccoli",
-  "version": "0.4.1",
-  "description": "Broccoli build and serve tasks for Grunt task runner",
-  "main": "Gruntfile.js",
+  "version": "1.0.0",
+  "description": "Grunt task to manage your Broccoli workflow",
+  "main": "index.js",
   "tags": [
     "gruntplugin",
     "broccoli"
   ],
   "scripts": {
-    "test": "grunt test"
+    "prebuild": "rm -rf tasks spec/fixtures/output",
+    "build": "broccoli build tasks",
+    "postbuild": "rm -rf tmp",
+    "test": "npm run postinstall && jasmine && npm run prebuild",
+    "postinstall": "npm run build"
   },
   "author": "Taras Mankovski <taras@quandl.com>",
   "license": "MIT",

@@ -1,69 +1,103 @@
-# grunt-broccoli [![Build Status](https://travis-ci.org/quandl/grunt-broccoli.svg?branch=master)](https://travis-ci.org/quandl/grunt-broccoli)
 
-Allows you to execute your Broccoli configurations as Grunt tasks. [Broccoli](https://github.com/joliss/broccoli) is an asset pipeline that allows for incremental builds. Broccoli rebuilds individual files instead of the entire project as Grunt watch does. Checkout the [Broccoli Sample App](https://github.com/joliss/broccoli-sample-app).
+# [grunt](https://github.com/gruntjs/grunt)-[broccoli](https://github.com/joliss/broccoli)
 
+> Grunt task to manage your Broccoli workflow
 
-## Running your tasks
+Looking for pre 1.0 docs? They can be found [here](https://github.com/quandl/grunt-broccoli/tree/a74bed5f19ba1625bd155e93f3ba907acc75bd4d).
 
-grunt-broccoli is a multi-task so you must specify a target when running the task.
+## Install
 
-#### Building to a directory
-
-```bash
-grunt broccoli:{targetName}:build
+```
+$ npm install --save-dev grunt-broccoli
 ```
 
-#### Watching for changes and re-building to a directory
 
-```bash
-grunt broccoli:{targetName}:watch
-```
+## Usage
 
-#### Running the Broccoli server
-
-```bash
-grunt broccoli:{targetName}:serve
-```
-
-## Configuring your tasks
-
-You can configure these settings (see examples below):
-
-`config`: [String or Function]
-If a string, it refers to the location of the Brocfile relative to the current working directory.
-If a function, it expects that the return value is a Broccoli-compatible tree.
-Defaults to 'Brocfile.js'.
-
-`dest`: [String]
-Specifies the output folder. This doesn't affect the `serve` command.
-The `build` and `watch` commands will abort if a `dest` directory is not set.
-
-`host`/`port`: [String]/[Number]
-Specifies the host and port that the Broccoli server runs on. This only affects the `serve` command.
-Defaults to `localhost` and `4200`.
-
-`env`: [String]
-Set the `BROCCOLI_ENV` to use (see [broccoli-env](https://github.com/joliss/broccoli-env)).
-
-## Examples
-
-```javascript
-broccoli: {
-  dist: {
-    dest: 'dist',
-    config: function() {
-      var transpiled = transpileTree('lib');
-      var allFiles = mergeTrees([transpiled, 'vendor']);
-      var concated = concatFiles(allFiles);
-      var uglified = uglifyFiles(concated);
-      return uglified;
-    }
-  },
-
-  dev: {
-    dest: 'tmp/tests',
-    config: 'brocfiles/development.js',
-    port: 4201
+```js
+grunt.initConfig({
+  broccoli: {
+    development: {
+      dir: 'build',
+      env: 'development',
+      liveReload: true,
+      serverScript: 'app.js'
+    },
   }
-}
+});
 ```
+
+
+## Options
+
+##### dir
+Type: `string` *Required*
+
+Path to build into.
+
+##### env
+Type: `string` *Optional*
+
+Value for `BROCCOLI_ENV` when building. Defaults to `development`.
+
+Defaults to `development`
+
+
+##### watcherClass
+Type: `class` *Optional*
+
+Alternative class to use for the broccoli file watcher, such as [broccoli-sane-watcher](https://github.com/krisselden/broccoli-sane-watcher).
+
+Defaults to [the watcher included with broccoli](https://github.com/broccolijs/broccoli/blob/master/lib/watcher.js).
+
+##### watcherOptions
+
+Type: `object` *Optional*
+
+Options to pass in to the watcher class on instantiation.
+
+Defaults to `{}`
+
+##### liveReload
+
+Type: `boolean` *Optional*
+
+Start a [live reload](https://github.com/mklabs/tiny-lr) server.
+
+Defaults to `false`
+
+##### liveReloadPort
+
+Type: `number` *Optional*
+
+Port for the live reload server to listen on.
+
+Defaults to `35729`
+
+##### serverScript
+
+Type: `string`
+
+Path to a script that starts a node http server. If set, the server will
+automatically restart after successful broccoli builds. If set with the
+`liveReload` option, live reload triggers will happen after the server
+restarts.
+
+To enable this, you must pass your server to the `grunt-broccoli` connect
+function so that `grunt` and your server can communicate. For example:
+
+```js
+var http = require("http");
+var server = http.createServer();
+var GruntBroccoli = require('grunt-broccoli');
+
+GruntBroccoli.connect(server);
+
+server.listen(3000);
+```
+
+## License
+
+MIT
+
+
