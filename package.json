@@ -11,6 +11,7 @@
     "test": "grunt test"
   },
   "author": "Taras Mankovski <taras@quandl.com>",
+  "modifier": "Peter Yun <pyun@tidemark.com>",
   "license": "MIT",
   "repository": {
     "type": "git",
