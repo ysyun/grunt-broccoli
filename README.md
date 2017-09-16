@@ -1,5 +1,8 @@
 # grunt-broccoli [![Build Status](https://travis-ci.org/quandl/grunt-broccoli.svg?branch=master)](https://travis-ci.org/quandl/grunt-broccoli)
 
+## Deprecated
+This module has been deprecated in favor of [grunt-broccoli ^1.0.0](https://github.com/EmberSherpa/grunt-broccoli)
+
 Allows you to execute your Broccoli configurations as Grunt tasks. [Broccoli](https://github.com/joliss/broccoli) is an asset pipeline that allows for incremental builds. Broccoli rebuilds individual files instead of the entire project as Grunt watch does. Checkout the [Broccoli Sample App](https://github.com/joliss/broccoli-sample-app).
 
 
